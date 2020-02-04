@@ -1,0 +1,548 @@
+---
+title: "466 A1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+
+```{r}
+install.packages("jrvFinance")
+library(jrvFinance)
+```
+```{r}
+data202031<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202031.csv",header = TRUE)
+data202091<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202091.csv",header = TRUE)
+data202131<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202131.csv",header = TRUE)
+data202191<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202191.csv",header = TRUE)
+data202231<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202231.csv",header = TRUE)
+data202261<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202261.csv",header = TRUE)
+data202331<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202331.csv",header = TRUE)
+data202361<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202361.csv",header = TRUE)
+data202431<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202431.csv",header = TRUE)
+data202491<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202491.csv",header = TRUE)
+data202531<-read.csv("/Users/liuyangshan/Desktop/APM466/A1/historical data/202531.csv",header = TRUE)
+data202031[,1][1]
+
+```
+
+```{r}
+
+date202031<-as.Date(data202031[,1], "%m/%d/%y")
+date202091<-as.Date(data202091[,1], "%m/%d/%y")
+date202131<-as.Date(data202131[,1], "%m/%d/%y")
+date202191<-as.Date(data202191[,1], "%m/%d/%y")
+date202231<-as.Date(data202231[,1], "%m/%d/%y")
+date202261<-as.Date(data202261[,1], "%m/%d/%y")
+date202331<-as.Date(data202331[,1], "%m/%d/%y")
+date202361<-as.Date(data202361[,1], "%m/%d/%y")
+date202431<-as.Date(data202431[,1], "%m/%d/%y")
+date202491<-as.Date(data202491[,1], "%m/%d/%y")
+date202531<-as.Date(data202531[,1], "%m/%d/%y")
+
+
+```
+
+
+
+4a) calculate yeild to maturity
+```{r}
+#First, calculate each of your 10 selected bonds’ yield (ytm).
+
+ytmi202031 = rep(0,10)
+for (i in 1:10)
+{ytmi202031[i] = bond.yield(date202031[i],"2020-03-01",0.015,freq = 2,data202031[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202031<-rev(ytmi202031)
+
+
+ytmi202091 = rep(0,10)
+for (i in 1:10)
+{ytmi202091[i] = bond.yield(date202091[i],"2020-09-01",0.0075,freq = 2,data202091[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202091<-rev(ytmi202091)
+
+ytmi202131 = rep(0,10)
+for (i in 1:10)
+{ytmi202131[i] = bond.yield(date202131[i],"2021-03-01",0.0075,freq = 2,data202131[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202131<-rev(ytmi202131)
+
+ytmi202191 = rep(0,10)
+for (i in 1:10)
+{ytmi202191[i] = bond.yield(date202191[i],"2021-09-01",0.0075,freq = 2,data202191[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202191<-rev(ytmi202191)
+
+ytmi202231 = rep(0,10)
+for (i in 1:10)
+{ytmi202231[i] = bond.yield(date202231[i],"2022-03-01",0.005,freq = 2,data202231[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202231<-rev(ytmi202231)
+
+ytmi202331 = rep(0,10)
+for (i in 1:10)
+{ytmi202331[i] = bond.yield(date202331[i],"2023-03-01",0.0175,freq = 2,data202331[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202331<-rev(ytmi202331)
+
+ytm202291 = rep(0,10)
+for (i in 1:10)
+{ytm202291[i] = (ytm202231[i]+ytm202331[i])/2}
+
+
+ytmi202431 = rep(0,10)
+for (i in 1:10)
+{ytmi202431[i] = bond.yield(date202431[i],"2024-03-01",0.0225,freq = 2,data202431[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202431<-rev(ytmi202431)
+
+ytm202391 = rep(0,10)
+for (i in 1:10)
+{ytm202391[i] = (ytm202331[i]+ytm202431[i])/2}
+
+ytmi202491 = rep(0,10)
+for (i in 1:10)
+{ytmi202491[i] = bond.yield(date202491[i],"2024-09-01",0.015,freq = 2,data202491[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202491<-rev(ytmi202491)
+
+ytmi202531 = rep(0,10)
+for (i in 1:10)
+{ytmi202531[i] = bond.yield(date202531[i],"2025-03-01",0.0125,freq = 2,data202531[,2][i],
+                           convention = c("30/360","ACT/ACT","ACT/360","30/360E"),comp.freq=Inf,redemption_value = 100)}
+ytm202531<-rev(ytmi202531)
+
+ytmmatrix<- cbind(ytm202031,ytm202091,ytm202131,ytm202191,ytm202231,ytm202291,ytm202331,ytm202391,ytm202431,ytm202491,ytm202531)
+ytmmatrix
+ytm_matrix<-t(ytmmatrix)
+ytm_matrix
+```
+
+
+
+```{r}
+
+plot(1:11,ytm_matrix[,1],type="l",col="red",xlab = "Time (half years)",ylab="YTM",main ="Yield to Maturity")
+color = c("blue","yellow","green","black","purple","brown","pink","orange","grey")
+for (i in 2:10){
+  lines(1:11,ytm_matrix[,i],col=color[i],type="l")
+}
+legend("topright",legend = c("1.2","1.3","1.6","1.7","1.8","1.9","1.10","1.13","1.14","1.15"), col =c("red","blue","yellow","green","black","purple","brown","pink","orange","grey"),pch = rep(1,10))
+
+```
+
+
+
+b)
+To find the Spot rate, 
+Step 1: Declare variables:
+P be the dirty price, 
+
+# to calculate cash flow 
+```{r}
+#first find the dirty price 
+
+
+
+a<-rev(date202031)
+b<-rev(data202031[,2])
+c<- rep(0,10)
+
+for(i in 1:10){
+  c[i]= bond.TCF(a[i],"2020-03-01",0.015, freq = 2)$accrued + b[i]
+}
+c
+
+dirtypi202031 = rep(0,10)
+for (i in 1:10){
+  dirtypi202031[i]=bond.TCF(date202031[i], "2020-03-01", 0.015, freq = 2)$accrued+data202031[,2][i]
+}
+dirtyp202031<-rev(dirtypi202031)
+
+
+dirtypi202091 = rep(0,10)
+for (i in 1:10){
+  dirtypi202091[i]=bond.TCF(date202091[i], "2020-09-01", 0.0075, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$accrued+data202091[,2][i]
+}
+dirtyp202091<-rev(dirtypi202091)
+
+dirtypi202131 = rep(0,10)
+for (i in 1:10){
+  dirtypi202131[i]=bond.TCF(date202131[i], "2021-03-01", 0.0075, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$accrued+data202131[,2][i]
+}
+dirtyp202131<-rev(dirtypi202131)
+
+dirtypi202191 = rep(0,10)
+for (i in 1:10){
+  dirtypi202191[i]=bond.TCF(date202191[i], "2021-09-01", 0.0075, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$accrued+data202191[,2][i]
+}
+dirtyp202191<-rev(dirtypi202191)
+
+dirtypi202231 = rep(0,10)
+for (i in 1:10){
+  dirtypi202231[i]=bond.TCF(date202231[i], "2022-03-01", 0.005, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$accrued+data202231[,2][i]
+}
+dirtyp202231<-rev(dirtypi202231)
+
+dirtypi202331 = rep(0,10)
+for (i in 1:10){
+  dirtypi202331[i]=bond.TCF(date202331[i], "2023-03-01", 0.0175, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$accrued+data202331[,2][i]
+}
+dirtyp202331<-rev(dirtypi202331)
+
+dirtypi202431 = rep(0,10)
+for (i in 1:10){
+  dirtypi202431[i]=bond.TCF(date202431[i], "2024-03-01", 0.0225, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$accrued+data202431[,2][i]
+}
+dirtyp202431<-rev(dirtypi202431)
+
+dirtypi202491 = rep(0,10)
+for (i in 1:10){
+  dirtypi202491[i]=bond.TCF(date202491[i], "2024-09-01", 0.015, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$accrued+data202491[,2][i]
+}
+dirtyp202491<-rev(dirtypi202491)
+
+dirtypi202531 = rep(0,10)
+for (i in 1:10){
+  dirtypi202531[i]=bond.TCF(date202531[i], "2025-03-01", 0.0125, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$accrued+data202531[,2][i]
+}
+dirtyp202531<-rev(dirtypi202531)
+
+dirtyp202291 = rep(0,10)
+for (i in 1:10){
+  dirtyp202291[i]=((dirtyp202231[i]+dirtyp202331[i])/2)
+}
+
+dirtyp202391 = rep(0,10)
+for (i in 1:10){
+  dirtyp202391[i]=((dirtyp202431[i]+dirtyp202331[i])/2)
+}
+  
+dirty_matrix = rbind(dirtyp202031, dirtyp202091, dirtyp202131,dirtyp202191,dirtyp202231,dirtyp202291,dirtyp202331,dirtyp202391,dirtyp202431,dirtyp202491,dirtyp202531)
+
+dirty_matrix
+dirty_t = t(dirty_matrix)
+dirty_t
+
+
+
+
+
+
+
+```
+
+# to calculate cashflow
+```{r}
+cfi202031 = rep(0,10)
+for (i in 1:10){
+  cfi202031[i]=bond.TCF(date202031[i], "2020-03-01", 0.015, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202031<-rev(cfi202031)
+
+cfi202091 = rep(0,10)
+for (i in 1:10){
+  cfi202091[i]=bond.TCF(date202091[i], "2020-09-01", 0.0075, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202091<-rev(cfi202091)
+
+cfi202131 = rep(0,10)
+for (i in 1:10){
+  cfi202131[i]=bond.TCF(date202131[i], "2021-03-01", 0.0075, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202131<-rev(cfi202131)
+
+cfi202191 = rep(0,10)
+for (i in 1:10){
+  cfi202191[i]=bond.TCF(date202191[i], "2021-09-01", 0.0075, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202191<-rev(cfi202191)
+
+cfi202231 = rep(0,10)
+for (i in 1:10){
+  cfi202231[i]=bond.TCF(date202231[i], "2022-03-01", 0.005, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202231<-rev(cfi202231)
+
+cfi202331 = rep(0,10)
+for (i in 1:10){
+  cfi202331[i]=bond.TCF(date202331[i], "2023-03-01", 0.0175, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202331<-rev(cfi202331)
+
+cfi202431 = rep(0,10)
+for (i in 1:10){
+  cfi202431[i]=bond.TCF(date202431[i], "2024-03-01", 0.0225, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202431<-rev(cfi202431)
+
+cfi202491 = rep(0,10)
+for (i in 1:10){
+  cfi202491[i]=bond.TCF(date202491[i], "2024-09-01", 0.015, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202491<-rev(cfi202491)
+
+cfi202531 = rep(0,10)
+for (i in 1:10){
+  cfi202531[i]=bond.TCF(date202531[i], "2025-03-01", 0.0125, freq = 2, convention = c("30/360",
+      "ACT/ACT", "ACT/360", "30/360E"), redemption_value = 100)$cf[1]
+}
+cf202531<-rev(cfi202531)
+
+cf202291 = rep(0,10)
+for (i in 1:10){
+  cf202291[i]=((cf202231[i]+cf202331[i])/2)
+}
+
+cf202391 = rep(0,10)
+for (i in 1:10){
+  cf202391[i]=((cf202331[i]+cf202431[i])/2)
+}
+
+cf_matrix = rbind(cf202031, cf202091, cf202131,cf202191,cf202231,cf202291,cf202331,cf202391,cf202431,cf202491,cf202531)
+
+cf_matrix
+cf_t = t(cf_matrix)
+cf_t
+```
+
+# to find year fraction 
+```{r}
+
+daterev = rev(date202031)
+
+daterev
+
+yf202031 = rep(0,10)
+for (i in 1:10){
+  yf202031[i] = yearFraction(daterev[i],"2020-03-01" )
+}
+
+yf202091 = rep(0,10)
+for (i in 1:10){
+  yf202091[i] = yearFraction(daterev[i],"2020-09-01" )
+}
+
+yf202131 = rep(0,10)
+for (i in 1:10){
+  yf202131[i] = yearFraction(daterev[i],"2021-03-01" )
+}
+
+yf202191 = rep(0,10)
+for (i in 1:10){
+  yf202191[i] = yearFraction(daterev[i],"2021-09-01" )
+}
+
+yf202231 = rep(0,10)
+for (i in 1:10){
+  yf202231[i] = yearFraction(daterev[i],"2022-03-01" )
+}
+
+yf202291 = rep(0,10)
+for (i in 1:10){
+  yf202291[i] = yearFraction(daterev[i],"2022-09-01" )
+}
+
+yf202331 = rep(0,10)
+for (i in 1:10){
+  yf202331[i] = yearFraction(daterev[i],"2023-03-01" )
+}
+
+yf202391 = rep(0,10)
+for (i in 1:10){
+  yf202391[i] = yearFraction(daterev[i],"2023-09-01" )
+}
+
+yf202431 = rep(0,10)
+for (i in 1:10){
+  yf202431[i] = yearFraction(daterev[i],"2024-03-01" )
+}
+
+yf202491 = rep(0,10)
+for (i in 1:10){
+  yf202491[i] = yearFraction(daterev[i],"2024-09-01" )
+}
+
+yf202531 = rep(0,10)
+for (i in 1:10){
+  yf202531[i] = yearFraction(daterev[i],"2025-03-01" )
+}
+
+yf_matrix = rbind(yf202031, yf202091, yf202131,yf202191,yf202231,yf202291,yf202331,yf202391,yf202431,yf202491,yf202531)
+yf_matrix
+
+```
+
+```{r}
+yf_matrix[3,2]
+yf_t= t(yf_matrix)
+yf_t
+cf_t
+```
+
+
+# to calculate spot rate 
+```{r}
+spotrate = matrix(nrow =10, ncol =11 )
+spotrate202031 = rep(0,10)
+for ( i in 1:10 ){
+  spotrate202031[i]= -(log(dirty_matrix[1,i]/cf_matrix[1,i])) / yf_matrix[1,i]
+}
+spotrate202031
+
+spotrate[,1] = spotrate202031
+
+for (i in 1:10){
+  for (j in 2:11){
+    m = rep(0,j-1)
+    for (k in 1:j-1){
+    m[k] = cf_t[i,j]*exp(-spotrate[i,j-k]*yf_t[i,j-k])
+    }
+    spotrate[i,j]= -log((dirty_matrix[j,i]-sum(m))/(cf_t[i,j]+100))/yf_t[i,j]
+  }
+}
+spotrate
+
+
+
+
+```
+
+#plot the graph 
+```{r}
+
+plot(1:11,spotrate[1,],type="l",col="red",xlab = "Time (year)",ylab="spotrate",main ="spot rate")
+color = c("blue","yellow","green","black","purple","brown","pink","orange","grey")
+for (i in 2:10){
+  lines(1:11,spotrate[i,],col=color[i],type="l")
+}
+legend("topright",legend = c("1.2","1.3","1.6","1.7","1.8","1.9","1.10","1.13","1.14","1.15"), col =c("red","blue","yellow","green","black","purple","brown","pink","orange","grey"),pch = rep(1,10))
+```
+
+
+
+```{r}
+forward.rate <- matrix(nrow=10, ncol=4)
+
+for (i in 1:10)
+{
+  forward.rate[i,1] <- (spotrate[i,5]*yf_t[i,5]-spotrate[i,3]*yf_t[i,3])/1
+  forward.rate[i,2] <- (spotrate[i,7]*yf_t[i,7]-spotrate[i,5]*yf_t[i,5])/2
+  forward.rate[i,3] <- (spotrate[i,9]*yf_t[i,9]-spotrate[i,7]*yf_t[i,7])/3
+  forward.rate[i,4] <- (spotrate[i,11]*yf_t[i,11]-spotrate[i,9]*yf_t[i,9])/4
+}
+
+```
+
+
+#find forwardrate 
+```{r}
+
+forwardrate = matrix(nrow = 10, ncol = 4)
+
+yf_forward = cbind(yf_t[,5],yf_t[,7],yf_t[,9],yf_t[,11])
+yf_forward
+
+
+
+for ( i in 1:10){
+  forwardrate[i,1]= (spotrate[i,5]*yf_t[i,5]-spotrate[i,3]*yf_t[i,3])/1
+  forwardrate[i,2]= (spotrate[i,7]*yf_t[i,7]-spotrate[i,3]*yf_t[i,3])/2
+  forwardrate[i,3]= (spotrate[i,9]*yf_t[i,9]-spotrate[i,3]*yf_t[i,3])/3
+  forwardrate[i,4]= (spotrate[i,11]*yf_t[i,11]-spotrate[i,3]*yf_t[i,3])/4
+}
+
+forwardrate
+
+tfr = t(forwardrate)
+tfr
+
+
+plot(yf_forward[1,],forwardrate[1,],type="l",col="red",xlab = "Time",ylab="forward rate",main ="forwardrate",ylim = c(0.014,0.017), xlim = c(1.5,5.5))
+color = c("blue","yellow","green","black","purple","brown","pink","orange","grey")
+for (i in 2:10){
+  lines(yf_forward[i,],forwardrate[i,],col=color[i],type="l")
+}
+legend("bottomleft",legend = c("1.2","1.3","1.6","1.7","1.8","1.9","1.10","1.13","1.14","1.15"), col =c("red","blue","yellow","green","black","purple","brown","pink","orange","grey"),pch = rep(1,10))
+```
+
+
+#calculate covariance matrix daily log-returns of yield, and forward rates
+
+```{r}
+
+newytmmatrix = rbind(ytm202031,ytm202131,ytm202231,ytm202331,ytm202431,ytm202531)
+newytmmatrix
+
+logmatrix= matrix(nrow = 5, ncol = 9)
+
+for (i in 1:5){
+  for (j in 1:9){
+    logmatrix[i,j] = log(newytmmatrix[i,j+1]/newytmmatrix[i,j])
+  }
+}
+logmatrix
+tlogm = t(logmatrix)
+cov(tlogm)
+
+
+logfrmatrix = matrix(nrow = 4, ncol = 9)
+
+for ( i in 1:4){
+  for (j in 1:9){
+    logfrmatrix[i,j]= log(tfr[i,j+1]/tfr[i,j])
+  }
+}
+logfrmatrix
+tfm= t(logfrmatrix)
+cov(tfm)
+
+
+
+
+
+```
+
+#find the eigen value and eigen vector for both functions, 
+```{r}
+eigen(cov(tlogm))
+eigen(cov(tfm))
+eigen(cov(tfm))$vectors[,4
+                        ]
+```
+
+
+```{r}
+sum(eigen(cov(tlogm))$values)
+sum(eigen(cov(tfm))$values)
+```
+
